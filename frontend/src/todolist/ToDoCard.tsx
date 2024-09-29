@@ -1,11 +1,11 @@
-import {ToDo} from "./ToDoService";
+import {deleteToDo, ToDo} from "./ToDoService";
 import {Checkbox, IconButton, ListItem, ListItemButton, ListItemIcon, Typography} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import {DeleteOutline} from "@mui/icons-material";
 import {useState} from "react";
 
-type ToDoProps = { initialToDo: ToDo };
-export const ToDoCard = ({initialToDo}: ToDoProps) => {
+type ToDoProps = { initialToDo: ToDo; updateToDos: ()=>void};
+export const ToDoCard = ({initialToDo,updateToDos}: ToDoProps) => {
 
     const [toDo, setToDo] = useState<ToDo>(initialToDo);
 
@@ -20,7 +20,9 @@ export const ToDoCard = ({initialToDo}: ToDoProps) => {
         <ListItem
             sx={{mt: 1, borderRadius: 1, backgroundColor: grey[900], overflow: "hidden"}}
             secondaryAction={
-                <IconButton color="error" edge="end" aria-label="delete button">
+                <IconButton color="error" edge="end" aria-label="delete-button"
+                            onClick={()=>{ toDo.id && deleteToDo(toDo.id).then(updateToDos)
+                            }}>
                     <DeleteOutline/>
                 </IconButton>
             }

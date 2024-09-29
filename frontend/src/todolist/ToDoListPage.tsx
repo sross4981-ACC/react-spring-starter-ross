@@ -7,6 +7,9 @@ export const ToDoListPage = () => {
     const [toDos, setToDos] = useState<ToDo[]>([])
     const [newToDoText, setNewToDoText] = useState<string>('')
 
+    const updateToDos=()=>{
+        fetchToDos().then(setToDos);
+    };
     useEffect(() => {
         fetchToDos().then(setToDos);
     }, [])
@@ -26,7 +29,7 @@ export const ToDoListPage = () => {
                 <Typography variant='h5' fontWeight={600}>Your To Do List</Typography>
                 <List>
                     {toDos.map(toDo => (
-                        <ToDoCard key={toDo.id + toDo.text} initialToDo={toDo}/>
+                        <ToDoCard updateToDos={updateToDos} key={toDo.id + toDo.text} initialToDo={toDo}/>
                     ))}
                 </List>
             </Stack>

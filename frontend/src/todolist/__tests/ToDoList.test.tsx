@@ -1,4 +1,4 @@
-import {render, screen} from "@testing-library/react";
+import {render, screen, within} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {ToDoListPage} from "../ToDoListPage";
 import {expect} from "vitest";
@@ -49,5 +49,24 @@ describe('ToDoList', () => {
         const checkboxes = await screen.findAllByRole('checkbox');
         expect(checkboxes[0]).not.toBeChecked();
         expect(checkboxes[1]).toBeChecked();
+    });
+    it('should call delete todo when delete button is clicked', async () => {
+        const expected=[
+            {id: 10, text: 'imcomplete task', status: 'active'},
+            {id: 11, text: 'complete task', status: 'complete'},
+        ]
+        const mockFetchToDos=vi.spyOn(toDoService,'fetchToDos')
+            .mockResolvedValue(expected);
+        const mockDeleteToDo = vi.spyOn(toDoService, 'deleteToDo')
+            .mockResolvedValue();
+        render(<ToDoListPage/>);
+        const listItems=await screen.findAllByRole('listitem');
+        const toDoToDelete=listItems[0];
+        await userEvent.click(within(toDoToDelete).getByLabelText('delete-button'))
+
+        expect(mockDeleteToDo).toHaveBeenCalledOnce();
+        expect(mockDeleteToDo).toHaveBeenCalledWith(10);
+
+        expect(mockFetchToDos).toBeCalledTimes(2);
     });
 });
