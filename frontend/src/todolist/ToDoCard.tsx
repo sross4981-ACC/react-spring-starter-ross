@@ -20,7 +20,7 @@ export const ToDoCard = ({initialToDo}: ToDoProps) => {
         <ListItem
             sx={{mt: 1, borderRadius: 1, backgroundColor: grey[900], overflow: "hidden"}}
             secondaryAction={
-                <IconButton color="error" edge="end" aria-label="comments">
+                <IconButton color="error" edge="end" aria-label="delete button">
                     <DeleteOutline/>
                 </IconButton>
             }
